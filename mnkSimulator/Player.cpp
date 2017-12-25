@@ -1,6 +1,11 @@
 #include "stdafx.h"
 #include "Player.h"
 
+Player::Player(int playerNumber, int timeLimit)
+	:playerNumber(playerNumber), timeLimit(timeLimit)
+{	
+}
+
 PlayerType Player::getPlayerType()
 {
 	return PlayerType();
@@ -8,5 +13,10 @@ PlayerType Player::getPlayerType()
 
 int Player::getPlayerNumber()
 {
-	return 0;
+	return playerNumber;
+}
+
+int Player::getTimeLeft()
+{
+	return timeLimit - std::chrono::duration_cast<std::chrono::milliseconds>(Clock::now() - startTime).count();
 }
