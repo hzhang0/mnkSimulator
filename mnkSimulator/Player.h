@@ -11,7 +11,7 @@ protected:
 	int playerNumber;
 
 public:
-	virtual Move makeMove(Board* b, int timeLimit) = 0;
+	virtual Move* makeMove(Board* b, int timeLimit) = 0;
 	PlayerType getPlayerType();
 	int getPlayerNumber();
 };

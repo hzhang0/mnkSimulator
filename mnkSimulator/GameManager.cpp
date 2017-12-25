@@ -20,3 +20,8 @@ Board GameManager::getValidMoves(Board* b, Player* p)
 {
 	return Board();
 }
+
+bool GameManager::isValidMove(Board * b, Move * m, Player * p)
+{
+	return false;
+}

@@ -1,7 +1,18 @@
 #include "stdafx.h"
-#include "SampeAI.h"
+#include "SampleAI.h"
+#include "GameManager.h"
 
-Move SampleAI::makeMove(Board * b, int timeLimit)
+typedef std::vector<Move*> Moves;
+Move* SampleAI::makeMove(Board * b, int timeLimit)
 {
-	return Move();
+	Moves* moves = GameManager::getValidMoves(b, this);
+	return randomMove(moves);
+}
+
+Move* firstLegalMove(Moves* moves) {
+	return moves->at(0);
+}
+
+Move* randomMove(Moves* moves) {
+	return moves->at(std::rand()%moves->size());
 }
