@@ -7,7 +7,8 @@ enum class BoardSpace {
 	PLAYER2PIECE
 };
 
-typedef std::vector<std::vector <BoardSpace>*> boardData;
+typedef std::vector<BoardSpace> row;
+typedef std::vector<row*> boardData;
 
 class Board {
 private:
@@ -15,6 +16,8 @@ private:
 public:
 	Board(int m, int n);
 	Board(const Board& board);
-	BoardSpace getGrid(int x, int y);
+	BoardSpace getGrid(int x, int y) const;
 	void setGrid(Move* move);
+	int getNumRows() const;
+	int getNumCols() const;
 };
