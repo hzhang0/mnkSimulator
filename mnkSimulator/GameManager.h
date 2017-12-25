@@ -1,6 +1,6 @@
 #pragma once
 #include "Board.h"
-
+#include "Player.h"
 typedef std::vector<Move*> Moves;
 enum class EndState {
 	NOT_TERMINAL,
@@ -10,9 +10,9 @@ enum class EndState {
 };
 
 namespace GameManager {
-	static EndState isTerminal(Board* b);
-	static EndState isTerminal(Board* b, Move* lastMove);
-	static Board simulateMove(Board* b, Move* m, Player* p);
-	static Moves* getValidMoves(Board* b, Player* p);
-	static bool isValidMove(Board* b, Move* m, Player* p);
-}
+	EndState isTerminal(Board* b);
+	EndState isTerminal(Board* b, Move* lastMove);
+	Board* simulateMove(Board* b, Move* m, Player* p);
+	Moves* getValidMoves(Board* b, Player* p);
+	bool isValidMove(Board* b, Move* m, Player* p);
+};

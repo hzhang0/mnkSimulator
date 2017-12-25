@@ -16,7 +16,7 @@ Board::Board(int m, int n)
 }
 
 Board::Board(const Board & b) //copy constructor
-	:Board(b.getNumRows, b.getNumCols)
+	:Board(b.getNumRows(), b.getNumCols())
 {
 	//deep copy
 	for (int i = 0; i < getNumRows(); i++) {
@@ -42,4 +42,35 @@ int Board::getNumRows() const{
 
 int Board::getNumCols() const{
 	return board->at(0)->size();
+}
+
+void fillSpace(std::ostream& out, int i) {
+	if (i < 10) {
+		out << ' ';
+	}
+}
+
+void fillSpace2(std::ostream& out, int i) {
+	if (i >= 10) {
+		out << ' ';
+	}
+}
+
+std::ostream& operator<<(std::ostream & out, Board & b)
+{
+	out << "   ";
+	for (int i = 0; i < b.getNumCols(); i++) {
+		out << i << ' ';
+	}
+	out << std::endl;
+	for (int i = 0; i < b.getNumRows(); i++) {
+		out << i << ' ';
+		fillSpace(out, i);
+		for (int j = 0; j < b.getNumCols(); j++) {
+			out << b.BoardSpaceToChar[b.getGrid(j, i)] << ' ';
+			fillSpace2(out, j);
+		}
+		out << std::endl;
+	}
+	return out;
 }

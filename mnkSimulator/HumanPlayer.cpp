@@ -8,5 +8,5 @@ HumanPlayer::HumanPlayer(int m, int n, int k, int timeLimit, int playerNumber):
 
 Move* HumanPlayer::makeMove(Board * b, int timeLimit)
 {
-	return &Move(1,1, this);
+	return new Move(1,1, getPlayerNumber());
 }

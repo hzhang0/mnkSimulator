@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "GameManager.h"
+#include "Player.h"
 
 EndState GameManager::isTerminal(Board* b)
 {
@@ -11,17 +12,17 @@ EndState GameManager::isTerminal(Board* b, Move* lastMove) //faster method if la
 	return EndState();
 }
 
-Board GameManager::simulateMove(Board* b, Move* m, Player* p)
+Board* GameManager::simulateMove(Board* b, Move* m, Player* p)
 {
 	//check for terminality first. If b is a terminal state, raise an error.
 	//Also raise error if not valid move.
-	return Board();
+	return nullptr;
 }
 
 Moves* GameManager::getValidMoves(Board* b, Player* p)
 {
 	//check for terminality first. If terminal, return empty list.
-	return Board();
+	return nullptr;
 }
 
 bool GameManager::isValidMove(Board * b, Move * m, Player * p)

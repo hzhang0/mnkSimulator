@@ -1,15 +1,17 @@
 #include "stdafx.h"
-#include "Move.h"
 #include "Player.h"
+#include "Move.h"
+
 Move::Move(int x, int y, int playerNumber):
 	x(x), y(y), fromPlayer(playerNumber)
 {	
 }
 
-Move::Move(int x, int y, Player* player):
-	x(x), y(y), fromPlayer(player->getPlayerNumber())
+Move::Move(int x, int y, Player* p) :
+	x(x), y(y), fromPlayer(p->getPlayerNumber())
 {
 }
+
 
 int Move::getX()
 {

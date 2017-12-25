@@ -8,6 +8,14 @@ SampleAI::SampleAI(int m, int n, int k, int timeLimit, int playerNumber):
 
 }
 
+Move* firstLegalMove(Moves* moves) {
+	return moves->at(0);
+}
+
+Move* randomMove(Moves* moves) {
+	return moves->at(std::rand() % moves->size());
+}
+
 Move* SampleAI::makeMove(Board * b, int timeLimit)
 {
 	startTime = Clock::now();
@@ -15,10 +23,3 @@ Move* SampleAI::makeMove(Board * b, int timeLimit)
 	return randomMove(moves);
 }
 
-Move* firstLegalMove(Moves* moves) {
-	return moves->at(0);
-}
-
-Move* randomMove(Moves* moves) {
-	return moves->at(std::rand()%moves->size());
-}

@@ -1,5 +1,6 @@
 #pragma once
 #include "Board.h"
+#include "Player.h"
 
 class SampleAI : public Player {
 private:

@@ -36,10 +36,13 @@
     <ClInclude Include="HumanPlayer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SampeAI.h">
+    <ClInclude Include="Game.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Game.h">
+    <ClInclude Include="SampleAI.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -65,10 +68,10 @@
     <ClCompile Include="HumanPlayer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SampeAI.cpp">
+    <ClCompile Include="Game.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Game.cpp">
+    <ClCompile Include="SampleAI.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

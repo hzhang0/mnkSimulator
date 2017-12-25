@@ -1,6 +1,6 @@
 #pragma once
 #include "Board.h"
-
+#include "Player.h"
 class HumanPlayer : public Player {
 private:
 

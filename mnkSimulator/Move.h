@@ -1,6 +1,8 @@
 #pragma once
-#include "Player.h"
+#include "Common.h"
 #include <map>
+
+class Player;
 class Move {
 private:
 	int x;
@@ -10,7 +12,7 @@ private:
 public:
 	std::map<int, BoardSpace> playerNumToType = { {1, BoardSpace::PLAYER1PIECE},{2, BoardSpace::PLAYER2PIECE} };
 	Move(int x, int y, int playerNumber);
-	Move(int x, int y, Player* player);
+	Move(int x, int y, Player* p);
 	int getX();
 	int getY();
 	int getPlayer();

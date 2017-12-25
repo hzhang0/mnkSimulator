@@ -1,19 +1,16 @@
 #pragma once
-#include "Move.h"
+#include "Common.h"
 #include "Board.h"
+#include "Move.h"
 #include <chrono>
 typedef std::chrono::high_resolution_clock Clock;
-typedef std::chrono::time_point<std::chrono::steady_clock> time;
+typedef std::chrono::time_point<std::chrono::steady_clock> Time;
 
-enum class PlayerType {
-	HUMAN,
-	SAMPLEAI
-};
 class Player {
 protected:
 	PlayerType playerType;
 	int playerNumber;
-	time startTime;
+	Time startTime;
 	int timeLimit;
 	int getTimeLeft();
 	Player(int playerNumber, int timeLimit);

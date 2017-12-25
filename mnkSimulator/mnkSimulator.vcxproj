@@ -148,12 +148,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Board.h" />
+    <ClInclude Include="Common.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="HumanPlayer.h" />
     <ClInclude Include="Move.h" />
     <ClInclude Include="Player.h" />
-    <ClInclude Include="SampeAI.h" />
+    <ClInclude Include="SampleAI.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
@@ -165,7 +166,7 @@
     <ClCompile Include="mnkSimulator.cpp" />
     <ClCompile Include="Move.cpp" />
     <ClCompile Include="Player.cpp" />
-    <ClCompile Include="SampeAI.cpp" />
+    <ClCompile Include="SampleAI.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

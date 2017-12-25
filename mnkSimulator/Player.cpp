@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Player.h"
+#include "Move.h"
 
 Player::Player(int playerNumber, int timeLimit)
 	:playerNumber(playerNumber), timeLimit(timeLimit)
