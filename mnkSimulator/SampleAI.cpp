@@ -23,3 +23,8 @@ Move* SampleAI::makeMove(Board * b, int timeLimit)
 	return randomMove(moves);
 }
 
+char * SampleAI::getName()
+{
+	return "SampleAI";
+}
+

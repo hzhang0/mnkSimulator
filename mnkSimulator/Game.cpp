@@ -13,6 +13,8 @@ Game::Game(int m, int n, int k, Player * p1, Player * p2)
 
 void Game::startGame()
 {
+	std::cout << player1->getName() << std::endl;
+	std::cout << player2->getName() << std::endl;
 }
 
 Game::~Game()
