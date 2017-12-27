@@ -44,6 +44,11 @@ int Board::getNumCols() const{
 	return board->at(0)->size();
 }
 
+Board::~Board()
+{
+	//board should manage its own memory since it's a vector
+}
+
 void fillSpace(std::ostream& out, int i) {
 	if (i < 10) {
 		out << ' ';

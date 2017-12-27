@@ -14,3 +14,10 @@ Game::Game(int m, int n, int k, Player * p1, Player * p2)
 void Game::startGame()
 {
 }
+
+Game::~Game()
+{
+	delete player1;
+	delete player2;
+	delete board;
+}

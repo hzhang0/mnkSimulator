@@ -17,6 +17,10 @@ int Player::getPlayerNumber()
 	return playerNumber;
 }
 
+Player::~Player()
+{
+}
+
 int Player::getTimeLeft()
 {
 	return timeLimit - std::chrono::duration_cast<std::chrono::milliseconds>(Clock::now() - startTime).count();

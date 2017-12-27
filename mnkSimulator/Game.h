@@ -14,4 +14,5 @@ private:
 public:
 	Game(int m, int n, int k, Player* p1, Player* p2);
 	void startGame();
+	~Game();
 };

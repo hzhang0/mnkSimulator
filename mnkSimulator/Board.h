@@ -20,4 +20,5 @@ public:
 	int getNumRows() const;
 	int getNumCols() const;
 	friend std::ostream& operator<< (std::ostream &out, Board& b);
+	~Board();
 };
