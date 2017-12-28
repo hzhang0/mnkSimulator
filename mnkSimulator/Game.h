@@ -12,7 +12,7 @@ private:
 	int k;
 
 public:
-	Game(int m, int n, int k, Player* p1, Player* p2);
+	Game(int m, int n, int k, int timeLimit, Player* p1, Player* p2);
 	void startGame();
 	~Game();
 };
