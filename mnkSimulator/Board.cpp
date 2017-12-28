@@ -2,7 +2,8 @@
 #include "Board.h"
 #include "GameManager.h"
 
-Board::Board(int m, int n)
+Board::Board(int m, int n, int k):
+	k(k)
 {
 	//initialize board
 	board = new boardData();
@@ -16,7 +17,7 @@ Board::Board(int m, int n)
 }
 
 Board::Board(const Board & b) //copy constructor
-	:Board(b.getNumRows(), b.getNumCols())
+	:Board(b.getNumRows(), b.getNumCols(), b.getK())
 {
 	//deep copy
 	for (int i = 0; i < getNumRows(); i++) {
@@ -42,6 +43,11 @@ int Board::getNumRows() const{
 
 int Board::getNumCols() const{
 	return board->at(0)->size();
+}
+
+int Board::getK() const
+{
+	return k;
 }
 
 Board::~Board()

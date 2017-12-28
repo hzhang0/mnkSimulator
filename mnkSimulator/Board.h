@@ -11,14 +11,16 @@ typedef std::vector<row*> boardData;
 class Board {
 private:
 	boardData * board;
+	int k;
 public:
 	std::map<BoardSpace, char> BoardSpaceToChar = { {BoardSpace::EMPTY,'.'}, {  BoardSpace::PLAYER1PIECE, 'X' },{BoardSpace::PLAYER2PIECE , 'O'} };
-	Board(int m, int n);
+	Board(int m, int n, int k);
 	Board(const Board& board);
 	BoardSpace getGrid(int x, int y) const;
 	void setGrid(Move* move);
 	int getNumRows() const;
 	int getNumCols() const;
+	int getK() const;
 	friend std::ostream& operator<< (std::ostream &out, Board& b);
 	~Board();
 };
