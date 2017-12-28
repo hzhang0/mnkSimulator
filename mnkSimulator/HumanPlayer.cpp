@@ -11,7 +11,7 @@ Move* HumanPlayer::makeMove(Board * b, int timeLimit)
 	return new Move(1,1, getPlayerNumber());
 }
 
-char * HumanPlayer::getName()
+const char * HumanPlayer::getName()
 {
 	return "Human";
 }
