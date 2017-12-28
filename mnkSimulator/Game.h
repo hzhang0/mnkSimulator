@@ -10,6 +10,7 @@ private:
 	int m;
 	int n;
 	int k;
+	int timeLimit;
 
 public:
 	Game(int m, int n, int k, int timeLimit, Player* p1, Player* p2);

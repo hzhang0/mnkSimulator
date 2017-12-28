@@ -16,6 +16,7 @@ Board* GameManager::simulateMove(Board* b, Move* m, Player* p)
 {
 	//check for terminality first. If b is a terminal state, raise an error.
 	//Also raise error if not valid move.
+	//returns copy of board (use copy constructor)
 	return nullptr;
 }
 
@@ -29,5 +30,6 @@ bool GameManager::isValidMove(Board * b, Move * m, Player * p)
 {
 	//No need to check for terminality here. Will be done inside game loop.
 	//check m->isWithinBounds() first
+	//also check if m->getPlayer() == p->getPlayerNumber()
 	return false;
 }

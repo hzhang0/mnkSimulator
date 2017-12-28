@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Game.h"
 #include "Common.h"
+#include "Player.h"
 #include "GameManager.h"
 #include <chrono>
 #include <thread>
@@ -12,6 +13,7 @@ Game::Game(int m, int n, int k, int timeLimit, Player * p1, Player * p2)
 	this->m = m;
 	this->n = n;
 	this->k = k;
+	this->timeLimit = timeLimit;
 	this->player1 = p1;
 	this->player2 = p2;
 	this->board = new Board(m, n, k);
@@ -28,13 +30,6 @@ void swap(T*& a, T*& b) {
 	b = temp;
 }
 
-void timer() {
-	for (int i = 0; i<10; ++i)
-	{
-		std::cout << (10 - i) << '\n';
-		std::this_thread::sleep_for(std::chrono::seconds(1));
-	}
-}
 
 void setCursorPosition(int x, int y)
 {
@@ -44,28 +39,73 @@ void setCursorPosition(int x, int y)
 	SetConsoleCursorPosition(hOut, coord);
 }
 
+void getCursorLoc(int& x, int &y) {
+	static const HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+	CONSOLE_SCREEN_BUFFER_INFO csbi;
+	GetConsoleScreenBufferInfo(hOut, &csbi);
+	//std::cout << csbi.dwCursorPosition.X << " " << csbi.dwCursorPosition.Y << std::endl;
+	x = csbi.dwCursorPosition.X;
+	y = csbi.dwCursorPosition.Y;
+}
+
+void timer(int timeLimit, std::atomic<bool>* running) {
+	int origX, origY;
+	for (int i = timeLimit; i>=0; i-=250)
+	{
+		getCursorLoc(origX, origY);
+		setCursorPosition(6, 0);
+		std::cout << (max(0, i)) << " ms        ";
+		setCursorPosition(origX, origY);
+		if (!(*running) || i <= 0) {
+			break;
+		}
+		std::this_thread::sleep_for(std::chrono::milliseconds(250));
+	}
+}
+
 void Game::startGame()
 {
 	clearScreen();
-	std::cout << "Player 1: " << player1->getName() << std::endl;
-	std::cout << "Player 2: " << player2->getName() << std::endl;
-	std::cout << "Starting game..." << std::endl;
+	//std::cout << "Player 1: " << player1->getName() << std::endl;
+	//std::cout << "Player 2: " << player2->getName() << std::endl;
+	//std::cout << "Starting game..." << std::endl;	
 	auto curPlayer = player1;
 	auto otherPlayer = player2;
 	EndState es = GameManager::isTerminal(board);
 	int move{ 1 };
 	while (es == EndState::NOT_TERMINAL) {
+		std::cout << "Time:         " << std::endl;
 		std::cout << "Move " << move << std::endl;
 		std::cout << "Player " << curPlayer->getPlayerNumber() << ", " << curPlayer->getName() << ", to move." << std::endl << std::endl;
 		std::cout << *board;
 
-		auto future = std::async(timer);
-		
-		POINT p;
-		GetCursorPos(&p);
-		std::cout << p.x << std::endl;		
-		std::cout << p.y << std::endl;
-		break;
+		std::atomic<bool> running{ true };
+		auto future = std::async(timer, timeLimit, &running);
+		auto future2 = std::async(&(Player::makeMove), curPlayer, &Board(*board), timeLimit);
+		while (future2.wait_for(std::chrono::milliseconds(100)) == std::future_status::timeout) { //if comp finishes before timer, stop
+			if (future.wait_for(std::chrono::milliseconds(100)) == std::future_status::timeout) { //if timer is up, break
+				break;
+			}
+		}		
+		running = false;
+		Move* m;
+		if (future2.wait_for(std::chrono::milliseconds(100)) == std::future_status::timeout) { //if computation is still not done
+			std::cout << "Time's up!" << std::endl;
+			m = GameManager::getValidMoves(board, curPlayer)->at(0);
+			std::cout << "Assigned random move (" << m->getX() << ", " << m->getY() << ")." << std::endl;
+		}
+		else {
+			std::this_thread::sleep_for(std::chrono::milliseconds(250)); //wait one full cycle of timer for it to move cursor back to end
+			m = future2.get();
+			std::cout << "Received move (" << m->getX()<< ", " << m->getY() << ")." << std::endl;
+		}		
+		if (!GameManager::isValidMove(board, m, curPlayer)) {
+			std::cout << "Move is invalid!" << std::endl;
+			m = GameManager::getValidMoves(board, curPlayer)->at(0);
+			std::cout << "Assigned random move (" << m->getX() << ", " << m->getY() << ")." << std::endl;
+		}
+		std::this_thread::sleep_for(std::chrono::seconds(3)); //allow person to look at move
+		board = GameManager::simulateMove(board, m, curPlayer);
 		es = GameManager::isTerminal(board);
 		clearScreen();
 		if (es != EndState::NOT_TERMINAL) {
