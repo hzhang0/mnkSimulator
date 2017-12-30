@@ -63,16 +63,16 @@ void Game::startGame()
 		std::cout << *board;
 
 		std::atomic<bool> running{ true };
-		auto future = std::async(timer, timeLimit, &running);
-		auto future2 = std::async(&(Player::makeMove), curPlayer, &Board(*board), timeLimit);
+		auto future = std::async(std::launch::async, timer, timeLimit, &running);
+		std::this_thread::sleep_for(std::chrono::milliseconds(10)); //avoids conflict between outputs
+		auto future2 = std::async(std::launch::async, &(Player::makeMove), curPlayer, &Board(*board), timeLimit);
 		while (future2.wait_for(std::chrono::milliseconds(100)) == std::future_status::timeout) { //if comp finishes before timer, stop
-			if (future.wait_for(std::chrono::milliseconds(100)) == std::future_status::timeout) { //if timer is up, break
+			if (future.wait_for(std::chrono::milliseconds(100)) != std::future_status::timeout) { //if timer is up, break
 				break;
 			}
 		}		
 		running = false;
 		Move* m;
-		break; //uncomment this when GameManager is implemented
 		if (future2.wait_for(std::chrono::milliseconds(100)) == std::future_status::timeout) { //if computation is still not done
 			std::cout << "Time's up!" << std::endl;
 			m = GameManager::getValidMoves(board, curPlayer)->at(0);
@@ -82,18 +82,19 @@ void Game::startGame()
 			std::this_thread::sleep_for(std::chrono::milliseconds(250)); //wait one full cycle of timer for it to move cursor back to end
 			m = future2.get();
 			std::cout << "Received move (" << m->getX()<< ", " << m->getY() << ")." << std::endl;
-		}		
-		if (!GameManager::isValidMove(board, m, curPlayer)) {
-			std::cout << "Move is invalid!" << std::endl;
-			m = GameManager::getValidMoves(board, curPlayer)->at(0);
-			std::cout << "Assigned random move (" << m->getX() << ", " << m->getY() << ")." << std::endl;
-		}
+			if (!GameManager::isValidMove(board, m, curPlayer)) {
+				std::cout << "Move is invalid!" << std::endl;
+				m = GameManager::getValidMoves(board, curPlayer)->at(0);
+				std::cout << "Assigned random move (" << m->getX() << ", " << m->getY() << ")." << std::endl;
+			}
+		}			
 		std::this_thread::sleep_for(std::chrono::seconds(3)); //allow person to look at move
 		board = GameManager::simulateMove(board, m, curPlayer);
 		es = GameManager::isTerminal(board);
 		clearScreen();
 		if (es != EndState::NOT_TERMINAL) {
 			swap(curPlayer, otherPlayer);
+			move++;
 		}
 	}
 

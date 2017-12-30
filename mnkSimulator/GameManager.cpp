@@ -23,7 +23,7 @@ Board* GameManager::simulateMove(Board* b, Move* m, Player* p)
 Moves* GameManager::getValidMoves(Board* b, Player* p)
 {
 	//check for terminality first. If terminal, return empty list.
-	return nullptr;
+	return new Moves{new Move(1,1,1)};
 }
 
 bool GameManager::isValidMove(Board * b, Move * m, Player * p)
