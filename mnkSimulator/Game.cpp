@@ -6,7 +6,7 @@
 #include <chrono>
 #include <thread>
 #include <future>
-#include <Windows.h>
+#include <algorithm>
 
 Game::Game(int m, int n, int k, int timeLimit, Player * p1, Player * p2)
 {
@@ -31,30 +31,13 @@ void swap(T*& a, T*& b) {
 }
 
 
-void setCursorPosition(int x, int y)
-{
-	static const HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
-	std::cout.flush();
-	COORD coord = { (SHORT)x, (SHORT)y };
-	SetConsoleCursorPosition(hOut, coord);
-}
-
-void getCursorLoc(int& x, int &y) {
-	static const HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
-	CONSOLE_SCREEN_BUFFER_INFO csbi;
-	GetConsoleScreenBufferInfo(hOut, &csbi);
-	//std::cout << csbi.dwCursorPosition.X << " " << csbi.dwCursorPosition.Y << std::endl;
-	x = csbi.dwCursorPosition.X;
-	y = csbi.dwCursorPosition.Y;
-}
-
 void timer(int timeLimit, std::atomic<bool>* running) {
 	int origX, origY;
 	for (int i = timeLimit; i>=0; i-=250)
 	{
 		getCursorLoc(origX, origY);
 		setCursorPosition(6, 0);
-		std::cout << (max(0, i)) << " ms        ";
+		std::cout << (std::max(0, i)) << " ms        ";
 		setCursorPosition(origX, origY);
 		if (!(*running) || i <= 0) {
 			break;
@@ -89,6 +72,7 @@ void Game::startGame()
 		}		
 		running = false;
 		Move* m;
+		break; //uncomment this when GameManager is implemented
 		if (future2.wait_for(std::chrono::milliseconds(100)) == std::future_status::timeout) { //if computation is still not done
 			std::cout << "Time's up!" << std::endl;
 			m = GameManager::getValidMoves(board, curPlayer)->at(0);

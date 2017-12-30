@@ -161,6 +161,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Board.cpp" />
+    <ClCompile Include="Common.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="HumanPlayer.cpp" />

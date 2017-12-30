@@ -78,7 +78,7 @@ std::ostream& operator<<(std::ostream & out, Board & b)
 		out << i << ' ';
 		fillSpace(out, i);
 		for (int j = 0; j < b.getNumCols(); j++) {
-			out << b.BoardSpaceToChar[b.getGrid(j, i)] << ' ';
+			out << BoardSpaceToChar.at(b.getGrid(j, i)) << ' ';
 			fillSpace2(out, j);
 		}
 		out << std::endl;

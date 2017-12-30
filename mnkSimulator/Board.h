@@ -12,8 +12,7 @@ class Board {
 private:
 	boardData * board;
 	int k;
-public:
-	std::map<BoardSpace, char> BoardSpaceToChar = { {BoardSpace::EMPTY,'.'}, {  BoardSpace::PLAYER1PIECE, 'X' },{BoardSpace::PLAYER2PIECE , 'O'} };
+public:	
 	Board(int m, int n, int k);
 	Board(const Board& board);
 	BoardSpace getGrid(int x, int y) const;
