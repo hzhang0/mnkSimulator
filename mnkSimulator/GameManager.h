@@ -8,10 +8,17 @@ enum class EndState {
 	YOU_LOSE,
 	DRAW
 };
+enum class ConnectionDirection{
+	LEFTDIAG,
+	RIGHTDIAG,
+	VERTICAL,
+	HORIZONTAL
+};
 
 namespace GameManager {
 	EndState isTerminal(Board* b);
 	EndState isTerminal(Board* b, Move* lastMove);
+	int addConnectionToBoard(std::vector<std::vector<int>*> * b, int x, int y, ConnectionDirection c);
 	Board* simulateMove(Board* b, Move* m, Player* p);
 	Moves* getValidMoves(Board* b, Player* p);
 	bool isValidMove(Board* b, Move* m, Player* p);

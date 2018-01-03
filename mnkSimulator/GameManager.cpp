@@ -4,12 +4,75 @@
 
 EndState GameManager::isTerminal(Board* b)
 {
-	return EndState();
+	std::vector<std::vector<int>*> * p1 = new std::vector<std::vector<int>*>();
+	std::vector<std::vector<int>*> * p2 = new std::vector<std::vector<int>*>();
+	int width = b->getNumCols();
+	int height = b->getNumRows();
+	int k = b->getK();
+	bool hasEmpty{false};
+	int connection = 0;
+	std::vector<ConnectionDirection> dir = {
+		ConnectionDirection::LEFTDIAG,
+		ConnectionDirection::RIGHTDIAG,
+		ConnectionDirection::VERTICAL,
+		ConnectionDirection::HORIZONTAL
+	};
+
+	for (int c = 0; c < dir.size(); c++){ // Loop through all directions of connections
+		p1 = new std::vector<std::vector<int>*>();
+		p2 = new std::vector<std::vector<int>*>();
+
+		for (int i = 0; i < height; i++) {
+			for (int j = 0; j < width; j++) {
+				switch(b->getGrid(j,i)) {
+				    case BoardSpace::EMPTY:
+						hasEmpty = true;
+						break;
+
+				    case BoardSpace::PLAYER1PIECE:
+						connection = addConnectionToBoard(p1, j, i, dir.at(c));
+						if(connection >= k){return EndState::YOU_WIN;} // Player 1 wins
+						break;
+
+					case BoardSpace::PLAYER2PIECE:
+						connection = addConnectionToBoard(p2, j, i, dir.at(c));
+						if(connection >= k){return EndState::YOU_LOSE;} // Player 2 wins
+						break;
+				}
+			}
+		}
+	}
+	if(!hasEmpty) return EndState::DRAW; // If board is full (not empty) and nobody wins, draw.
+	return EndState::NOT_TERMINAL; // Not yet terminal
 }
 
 EndState GameManager::isTerminal(Board* b, Move* lastMove) //faster method if last move is provided
 {
 	return EndState();
+}
+
+int GameManager::addConnectionToBoard(std::vector<std::vector<int>*> * b, int x, int y, ConnectionDirection c){
+	int h = b->size();
+	int w = b->at(0)->size();
+	switch(c){
+		case ConnectionDirection::LEFTDIAG:
+			if(x != 0 && y != 0){ b->at(y)->at(x) = b->at(y-1)->at(x-1) + 1; }
+			else{ b->at(y)->at(x) = 1; }
+			break;
+		case ConnectionDirection::RIGHTDIAG:
+			if(x != w-1 && y != h-1){ b->at(y)->at(x) = b->at(y+1)->at(x+1) + 1; }
+			else{ b->at(y)->at(x) = 1; }
+			break;
+		case ConnectionDirection::VERTICAL:
+			if(y != 0){ b->at(y)->at(x) = b->at(y-1)->at(x) + 1; }
+			else{ b->at(y)->at(x) = 1; }
+			break;
+		case ConnectionDirection::HORIZONTAL:
+			if(x != 0){ b->at(y)->at(x) = b->at(y)->at(x-1) + 1; }
+			else{ b->at(y)->at(x) = 1; }
+			break;
+	}
+	return b->at(y)->at(x);
 }
 
 Board* GameManager::simulateMove(Board* b, Move* m, Player* p)
