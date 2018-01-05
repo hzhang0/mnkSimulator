@@ -21,15 +21,15 @@ EndState GameManager::isTerminal(Board* b)
 	};
 
 	for (int c = 0; c < dir.size(); c++){ // Loop through all directions of connections
-		p1 = new std::vector<std::vector<int>*>();
-		p2 = new std::vector<std::vector<int>*>();
+		p1->clear();
+		p2->clear();
 
 		for (int i = 0; i < height; i++) {
 			std::vector<int>* row = new std::vector<int>();
 			row->reserve(width);
 			for (int j = 0; j < width; j++) { row->push_back(0); }
-			p1->push_back(row);
-			p2->push_back(row);
+			p1->push_back(new std::vector<int>(*row));
+			p2->push_back(new std::vector<int>(*row));
 			for (int j = 0; j < width; j++) {
 				switch(b->getGrid(j,i)) {
 				    case BoardSpace::EMPTY:
@@ -38,12 +38,16 @@ EndState GameManager::isTerminal(Board* b)
 
 				    case BoardSpace::PLAYER1PIECE:
 						connection = addConnectionToBoard(p1, j, i, dir.at(c));
-						if(connection >= k){return EndState::PLAYER1_WINS;} // Player 1 wins
+						if(connection >= k){
+							return EndState::PLAYER1_WINS;
+						} // Player 1 wins
 						break;
 
 					case BoardSpace::PLAYER2PIECE:
 						connection = addConnectionToBoard(p2, j, i, dir.at(c));
-						if(connection >= k){return EndState::PLAYER2_WINS;} // Player 2 wins
+						if(connection >= k){
+							return EndState::PLAYER2_WINS;
+						} // Player 2 wins
 						break;
 				}
 			}
