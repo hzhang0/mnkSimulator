@@ -76,16 +76,16 @@ void Game::startGame()
 		if (future2.wait_for(std::chrono::milliseconds(100)) == std::future_status::timeout) { //if computation is still not done
 			std::cout << "Time's up!" << std::endl;
 			m = GameManager::getValidMoves(board, curPlayer)->at(0);
-			std::cout << "Assigned random move (" << m->getX() << ", " << m->getY() << ")." << std::endl;
+			std::cout << "Assigned random move (" << m->getY() << ", " << m->getX() << ")." << std::endl;
 		}
 		else {
 			std::this_thread::sleep_for(std::chrono::milliseconds(250)); //wait one full cycle of timer for it to move cursor back to end
 			m = future2.get();
-			std::cout << "Received move (" << m->getX()<< ", " << m->getY() << ")." << std::endl;
+			std::cout << "Received move (" << m->getY()<< ", " << m->getX() << ")." << std::endl;
 			if (!GameManager::isValidMove(board, m, curPlayer)) {
 				std::cout << "Move is invalid!" << std::endl;
 				m = GameManager::getValidMoves(board, curPlayer)->at(0);
-				std::cout << "Assigned random move (" << m->getX() << ", " << m->getY() << ")." << std::endl;
+				std::cout << "Assigned random move (" << m->getY() << ", " << m->getX() << ")." << std::endl;
 			}
 		}			
 		std::this_thread::sleep_for(std::chrono::seconds(2)); //allow person to look at move
@@ -105,8 +105,8 @@ void Game::startGame()
 		case EndState::PLAYER1_WINS:
 			//std::cout << "Player " << curPlayer->getPlayerNumber() << ", " << curPlayer->getName() << ", loses." << std::endl;
 			//std::cout << "Player " << otherPlayer->getPlayerNumber() << ", " << otherPlayer->getName() << ", wins." << std::endl;
-			std::cout << "Player 1" << ", " << player1->getName() << ", loses." << std::endl;
-			std::cout << "Player 2" << ", " << player2->getName() << ", wins." << std::endl;
+			std::cout << "Player 1" << ", " << player1->getName() << ", wins." << std::endl;
+			std::cout << "Player 2" << ", " << player2->getName() << ", loses." << std::endl;
 			break;
 		case EndState::PLAYER2_WINS:
 			//std::cout << "Player " << curPlayer->getPlayerNumber() << ", " << curPlayer->getName() << ", wins." << std::endl;

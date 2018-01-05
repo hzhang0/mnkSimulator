@@ -32,7 +32,7 @@ Move* HumanPlayer::makeMove(Board * b, int timeLimit){
 			valid = true;
 		}
 	}
-	return new Move(m1, m2, getPlayerNumber());
+	return new Move(m2, m1, getPlayerNumber());
 }
 
 const char * HumanPlayer::getName()
