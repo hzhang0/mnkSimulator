@@ -91,7 +91,7 @@ EndState GameManager::isTerminal(Board* b, Move* lastMove) //faster method if la
 				break;
 			case ConnectionDirection::VERTICAL:
 				connection = isTerminalRecursive(b, p, lastMove->getX(), lastMove->getY(), 0, -1);
-				connection += isTerminalRecursive(b, p, lastMove->getX(), lastMove->getY() - 1, 0, 1);
+				connection += isTerminalRecursive(b, p, lastMove->getX(), lastMove->getY() + 1, 0, 1);
 				break;
 			case ConnectionDirection::HORIZONTAL:
 				connection = isTerminalRecursive(b, p, lastMove->getX(), lastMove->getY(), -1, 0);
@@ -124,7 +124,7 @@ int GameManager::addConnectionToBoard(std::vector<std::vector<int>*> * b, int x,
 			else{ b->at(y)->at(x) = 1; }
 			break;
 		case ConnectionDirection::RIGHTDIAG:
-			if(x != w-1 && y != h-1){ b->at(y)->at(x) = b->at(y+1)->at(x+1) + 1; }
+			if(x < w-1 && y > 0){ b->at(y)->at(x) = b->at(y-1)->at(x+1) + 1; }
 			else{ b->at(y)->at(x) = 1; }
 			break;
 		case ConnectionDirection::VERTICAL:
