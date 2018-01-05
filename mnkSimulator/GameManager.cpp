@@ -53,7 +53,7 @@ EndState GameManager::isTerminal(Board* b)
 			}
 		}
 	}
-	if(!hasEmpty) return EndState::DRAW; // If board is full (not empty) and nobody wins, draw.
+	if (!hasEmpty) { return EndState::DRAW; } // If board is full (not empty) and nobody wins, draw.
 	return EndState::NOT_TERMINAL; // Not yet terminal
 }
 
