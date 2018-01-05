@@ -4,8 +4,8 @@
 typedef std::vector<Move*> Moves;
 enum class EndState {
 	NOT_TERMINAL,
-	YOU_WIN,
-	YOU_LOSE,
+	PLAYER1_WINS,
+	PLAYER2_WINS,
 	DRAW
 };
 enum class ConnectionDirection{

@@ -38,12 +38,12 @@ EndState GameManager::isTerminal(Board* b)
 
 				    case BoardSpace::PLAYER1PIECE:
 						connection = addConnectionToBoard(p1, j, i, dir.at(c));
-						if(connection >= k){return EndState::YOU_WIN;} // Player 1 wins
+						if(connection >= k){return EndState::PLAYER1_WINS;} // Player 1 wins
 						break;
 
 					case BoardSpace::PLAYER2PIECE:
 						connection = addConnectionToBoard(p2, j, i, dir.at(c));
-						if(connection >= k){return EndState::YOU_LOSE;} // Player 2 wins
+						if(connection >= k){return EndState::PLAYER2_WINS;} // Player 2 wins
 						break;
 				}
 			}
@@ -101,7 +101,7 @@ Board* GameManager::simulateMove(Board* b, Move* m, Player* p)
 Moves* GameManager::getValidMoves(Board* b, Player* p)
 {
 	//check for terminality first. If terminal, return empty list.
-	Moves * m{};
+	Moves * m = new Moves();
 
 	if (isTerminal(b) != EndState::NOT_TERMINAL) {
 		return m;
@@ -111,7 +111,7 @@ Moves* GameManager::getValidMoves(Board* b, Player* p)
 	{
 		for (int j = 0; j < b->getNumCols(); j++)
 		{
-			if (b->getGrid(j, i) == BoardSpace::PLAYER2PIECE) {
+			if (b->getGrid(j, i) == BoardSpace::EMPTY) {
 				m->push_back(new Move(j, i, p->getPlayerNumber()));
 			}
 		}

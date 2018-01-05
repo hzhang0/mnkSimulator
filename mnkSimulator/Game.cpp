@@ -88,11 +88,11 @@ void Game::startGame()
 				std::cout << "Assigned random move (" << m->getX() << ", " << m->getY() << ")." << std::endl;
 			}
 		}			
-		std::this_thread::sleep_for(std::chrono::seconds(3)); //allow person to look at move
+		std::this_thread::sleep_for(std::chrono::seconds(2)); //allow person to look at move
 		board = GameManager::simulateMove(board, m, curPlayer);
 		es = GameManager::isTerminal(board);
 		clearScreen();
-		if (es != EndState::NOT_TERMINAL) {
+		if (es == EndState::NOT_TERMINAL) {
 			swap(curPlayer, otherPlayer);
 			move++;
 		}
@@ -102,13 +102,17 @@ void Game::startGame()
 		case EndState::DRAW:
 			std::cout << "The game ends in a draw." << std::endl;
 			break;
-		case EndState::YOU_LOSE:
-			std::cout << "Player " << curPlayer->getPlayerNumber() << ", " << curPlayer->getName() << ", loses." << std::endl;
-			std::cout << "Player " << otherPlayer->getPlayerNumber() << ", " << otherPlayer->getName() << ", wins." << std::endl;
+		case EndState::PLAYER1_WINS:
+			//std::cout << "Player " << curPlayer->getPlayerNumber() << ", " << curPlayer->getName() << ", loses." << std::endl;
+			//std::cout << "Player " << otherPlayer->getPlayerNumber() << ", " << otherPlayer->getName() << ", wins." << std::endl;
+			std::cout << "Player 1" << ", " << player1->getName() << ", loses." << std::endl;
+			std::cout << "Player 2" << ", " << player2->getName() << ", wins." << std::endl;
 			break;
-		case EndState::YOU_WIN:
-			std::cout << "Player " << curPlayer->getPlayerNumber() << ", " << curPlayer->getName() << ", wins." << std::endl;
-			std::cout << "Player " << otherPlayer->getPlayerNumber() << ", " << otherPlayer->getName() << ", loses." << std::endl;
+		case EndState::PLAYER2_WINS:
+			//std::cout << "Player " << curPlayer->getPlayerNumber() << ", " << curPlayer->getName() << ", wins." << std::endl;
+			//std::cout << "Player " << otherPlayer->getPlayerNumber() << ", " << otherPlayer->getName() << ", loses." << std::endl;
+			std::cout << "Player 1" << ", " << player1->getName() << ", loses." << std::endl;
+			std::cout << "Player 2" << ", " << player2->getName() << ", wins." << std::endl;
 			break;
 	}
 	std::cout << *board;
