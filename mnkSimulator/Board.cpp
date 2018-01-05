@@ -32,6 +32,10 @@ BoardSpace Board::getGrid (int x, int y) const
 	return board->at(y)->at(x);
 }
 
+bool Board::isWithinBounds(int x, int y) {
+	return (y >= 0 && y < board->size() && x >= 0 && x < board->at(0)->size());
+}
+
 void Board::setGrid(Move* move) //assumes that move will be valid at this point
 {
 		board->at(move->getY())->at(move->getX()) = (move->playerNumToType)[move->getPlayer()];	

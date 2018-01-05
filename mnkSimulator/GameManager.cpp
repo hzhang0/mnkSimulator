@@ -59,7 +59,60 @@ EndState GameManager::isTerminal(Board* b)
 
 EndState GameManager::isTerminal(Board* b, Move* lastMove) //faster method if last move is provided
 {
-	return EndState();
+	std::vector<ConnectionDirection> dir = {
+		ConnectionDirection::LEFTDIAG,
+		ConnectionDirection::RIGHTDIAG,
+		ConnectionDirection::VERTICAL,
+		ConnectionDirection::HORIZONTAL
+	};
+	BoardSpace p = lastMove->getPlayer() == 1 ? BoardSpace::PLAYER1PIECE : BoardSpace::PLAYER2PIECE;
+	int connection = 0;
+
+	bool hasEmpty = false;
+	for (int i = 0; i < b->getNumRows(); i++) {
+		if (hasEmpty) { break; }
+		for (int j = 0; j < b->getNumCols(); j++) {
+			if (b->getGrid(j, i) == BoardSpace::EMPTY) {
+				hasEmpty = true; break;
+			}
+		}
+	}
+	if (!hasEmpty) { return EndState::DRAW; }
+
+	for (int c = 0; c < dir.size(); c++) {
+		switch (dir.at(c)) {
+			case ConnectionDirection::LEFTDIAG:
+				connection = isTerminalRecursive(b, p, lastMove->getX(), lastMove->getY(), -1, -1);
+				connection += isTerminalRecursive(b, p, lastMove->getX() + 1, lastMove->getY() + 1, 1, 1);
+				break;
+			case ConnectionDirection::RIGHTDIAG:
+				connection = isTerminalRecursive(b, p, lastMove->getX(), lastMove->getY(), -1, 1);
+				connection += isTerminalRecursive(b, p, lastMove->getX() + 1, lastMove->getY() - 1, 1, -1);
+				break;
+			case ConnectionDirection::VERTICAL:
+				connection = isTerminalRecursive(b, p, lastMove->getX(), lastMove->getY(), 0, -1);
+				connection += isTerminalRecursive(b, p, lastMove->getX(), lastMove->getY() - 1, 0, 1);
+				break;
+			case ConnectionDirection::HORIZONTAL:
+				connection = isTerminalRecursive(b, p, lastMove->getX(), lastMove->getY(), -1, 0);
+				connection += isTerminalRecursive(b, p, lastMove->getX() + 1, lastMove->getY(), 1, 0);
+				break;
+		}
+		if (connection >= b->getK()) {
+			return lastMove->getPlayer() == 1 ? EndState::PLAYER1_WINS : EndState::PLAYER2_WINS;
+		}
+	}
+
+	return EndState::NOT_TERMINAL;
+}
+int GameManager::isTerminalRecursive(Board* b, BoardSpace s, int x, int y, int dx, int dy) {
+	if (b->isWithinBounds(x, y) && b->getGrid(x, y) == s) {
+		return 1 + isTerminalRecursive(b, s, x + dx, y + dy, dx, dy);
+	}
+	else {
+		return 0;
+	}
+	return 0;
 }
 
 int GameManager::addConnectionToBoard(std::vector<std::vector<int>*> * b, int x, int y, ConnectionDirection c){
