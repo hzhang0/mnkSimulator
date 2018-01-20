@@ -14,6 +14,8 @@ public:
 	virtual Move* makeMove(Board* b, int timeLimit) override;
 	virtual const char* getName() override;
 
-	int maxScore();
-	int minScore();
+	int maxScore(Board* b, int alpha, int beta);
+	int minScore(Move* m, Board* b, int alpha, int beta);
+	Player* getOpponent();
+	int getOrder(Player* p);
 };

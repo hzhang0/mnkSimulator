@@ -2,6 +2,8 @@
 #include "GameManager.h"
 #include "Player.h"
 
+std::vector<Player*>* GameManager::Players = new std::vector<Player*>();
+
 EndState GameManager::isTerminal(Board* b)
 {
 	std::vector<std::vector<int>*> * p1 = new std::vector<std::vector<int>*>();
@@ -191,4 +193,17 @@ bool GameManager::isValidMove(Board * b, Move * m, Player * p)
 	}
 
 	return false;
+}
+
+int GameManager::getScore(Board* b, Player* p) {
+	EndState gamestate = isTerminal(b);
+	if (gamestate == EndState::PLAYER1_WINS && p->getPlayerNumber() == 1 ||
+		gamestate == EndState::PLAYER2_WINS && p->getPlayerNumber() == 2) { return 100; }
+	else if (gamestate == EndState::PLAYER1_WINS && p->getPlayerNumber() == 2 ||
+		gamestate == EndState::PLAYER2_WINS && p->getPlayerNumber() == 1) { return 0; }
+	else if (gamestate == EndState::DRAW) { 
+
+		return 50; 
+	}
+	return 0;
 }
