@@ -147,6 +147,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="AlphaBetaAI.h" />
     <ClInclude Include="Board.h" />
     <ClInclude Include="Common.h" />
     <ClInclude Include="Game.h" />
@@ -169,6 +170,7 @@
     <ClCompile Include="Move.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="SampleAI.cpp" />
+    <ClCompile Include="AlphaBetaAI.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

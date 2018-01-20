@@ -10,12 +10,13 @@ enum class BoardSpace {
 
 enum class PlayerType {
 	HUMAN,
-	SAMPLEAI
+	SAMPLEAI,
+	ALPHABETAAI
 };
 void setCursorPosition(int, int);
 void getCursorLoc(int&, int&);
 char getCursorChar();
 
-const std::vector < std::string > playerNames = { "Human","SampleAI" };
-const std::map<std::string,PlayerType> playerNameToType = { { "Human",PlayerType::HUMAN },{ "SampleAI", PlayerType::SAMPLEAI} };
+const std::vector < std::string > playerNames = { "Human","SampleAI","AlphaBetaAI" };
+const std::map<std::string,PlayerType> playerNameToType = { { "Human",PlayerType::HUMAN },{ "SampleAI", PlayerType::SAMPLEAI},{ "AlphaBetaAI", PlayerType::ALPHABETAAI } };
 const std::map<BoardSpace, char> BoardSpaceToChar = { { BoardSpace::EMPTY,'.' },{ BoardSpace::PLAYER1PIECE, 'X' },{ BoardSpace::PLAYER2PIECE , 'O' } };

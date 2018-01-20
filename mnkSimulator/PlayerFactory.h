@@ -8,6 +8,7 @@ std::map<int, BoardSpace> playerNumToType = { { 1, BoardSpace::PLAYER1PIECE },{ 
 class Player;
 #include "HumanPlayer.h"
 #include "SampleAI.h"
+#include "AlphaBetaAI.h"
 template< typename T > 
 Player* fCreate(int m, int n, int k, int timeLimit, int playerNumber) {
 	return new T(m, n, k, timeLimit, playerNumber);
@@ -24,5 +25,6 @@ struct Mapping {
 } mapping[] =
 { { PlayerType::HUMAN, &fCreate<HumanPlayer> }
 ,{PlayerType::SAMPLEAI, &fCreate<SampleAI> }
+,{ PlayerType::ALPHABETAAI, &fCreate<AlphaBetaAI> }
 // , ...
 };

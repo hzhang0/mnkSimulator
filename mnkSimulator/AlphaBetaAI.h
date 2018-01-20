@@ -3,16 +3,17 @@
 #include "Player.h"
 #include "GameManager.h"
 
-class SampleAI : public Player {
+class AlphaBetaAI : public Player {
 private:
 	int m;
 	int n;
 	int k;
 
 public:
-	SampleAI(int m, int n, int k, int timeLimit, int playerNumber);
+	AlphaBetaAI(int m, int n, int k, int timeLimit, int playerNumber);
 	virtual Move* makeMove(Board* b, int timeLimit) override;
-	Move* firstLegalMove(Moves* moves);
-	Move* randomMove(Moves* moves);
 	virtual const char* getName() override;
+
+	int maxScore();
+	int minScore();
 };

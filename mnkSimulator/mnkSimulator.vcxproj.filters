@@ -48,6 +48,9 @@
     <ClInclude Include="PlayerFactory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="AlphaBetaAI.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -78,6 +81,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Common.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AlphaBetaAI.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
