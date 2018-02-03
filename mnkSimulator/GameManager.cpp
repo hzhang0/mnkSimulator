@@ -2,8 +2,6 @@
 #include "GameManager.h"
 #include "Player.h"
 
-std::vector<Player*>* GameManager::Players = new std::vector<Player*>();
-
 EndState GameManager::isTerminal(const Board* b)
 {
 	std::vector<std::vector<int>*> * p1 = new std::vector<std::vector<int>*>();

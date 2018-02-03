@@ -11,11 +11,9 @@ private:
 
 public:
 	AlphaBetaAI(int m, int n, int k, int timeLimit, int playerNumber);
-	virtual Move* makeMove(Board* b, int timeLimit) override;
+	virtual Move* makeMove(Board* b, int timeLimit, const Player* otherPlayer) override;
 	virtual const char* getName() override;
 
-	int maxScore(Board* b, int alpha, int beta);
-	int minScore(Board* b, int alpha, int beta);
-	Player* getOpponent();
-	int getOrder(Player* p);
+	int maxScore(Board* b, int alpha, int beta, const Player* otherPlayer);
+	int minScore(Board* b, int alpha, int beta, const Player* otherPlayer);
 };

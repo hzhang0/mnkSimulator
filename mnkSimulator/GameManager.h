@@ -16,7 +16,6 @@ enum class ConnectionDirection{
 };
 
 namespace GameManager {
-	extern std::vector<Player*>* Players;
 	EndState isTerminal(const Board* b);
 	EndState isTerminal(const Board* b, Move* lastMove);
 	int isTerminalRecursive(const Board* b, BoardSpace s, int x, int y, int dx, int dy);

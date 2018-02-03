@@ -13,7 +13,7 @@ HumanPlayer::HumanPlayer(int m, int n, int k, int timeLimit, int playerNumber):
 }
 
 
-Move* HumanPlayer::makeMove(Board * b, int timeLimit){
+Move* HumanPlayer::makeMove(Board * b, int timeLimit, const Player* otherPlayer){
 	std::string input;
 	bool valid = false;
 	int m1, m2;

@@ -8,23 +8,23 @@ AlphaBetaAI::AlphaBetaAI(int m, int n, int k, int timeLimit, int playerNumber) :
 
 }
 
-int AlphaBetaAI::minScore(Board* b, int alpha, int beta) {
+int AlphaBetaAI::minScore(Board* b, int alpha, int beta, const Player* otherPlayer) {
 	if (GameManager::isTerminal(b) != EndState::NOT_TERMINAL) {
 		return GameManager::getScore(b, this);		
 	}
-	Moves* moves = GameManager::getValidMoves(b, getOpponent());
+	Moves* moves = GameManager::getValidMoves(b, otherPlayer);
 	for (int i = 0; i < moves->size(); i++)
 	{
 		Move* move = moves->at(i);
-		Board* newBoard = GameManager::simulateMove(b, move, getOpponent());
-		beta = maxScore(newBoard, alpha, beta);	
+		Board* newBoard = GameManager::simulateMove(b, move, otherPlayer);
+		beta = maxScore(newBoard, alpha, beta, otherPlayer);
 		if (beta <= alpha) {
 			return alpha;
 		}
 	}
 	return beta;
 }
-int AlphaBetaAI::maxScore(Board* b, int alpha, int beta) {
+int AlphaBetaAI::maxScore(Board* b, int alpha, int beta, const Player* otherPlayer) {
 	if (GameManager::isTerminal(b) != EndState::NOT_TERMINAL) {
 		return GameManager::getScore(b, this);
 	}
@@ -33,7 +33,7 @@ int AlphaBetaAI::maxScore(Board* b, int alpha, int beta) {
 	{
 		Move* move = moves->at(i);
 		Board* newBoard = GameManager::simulateMove(b, move, this);
-		int minval = minScore(newBoard, alpha, beta);
+		int minval = minScore(newBoard, alpha, beta, otherPlayer);
 		alpha = alpha > minval ? alpha : minval;
 		if (alpha >= beta) {
 			return beta;
@@ -41,36 +41,17 @@ int AlphaBetaAI::maxScore(Board* b, int alpha, int beta) {
 	}
 	return alpha;
 }
-Player* AlphaBetaAI::getOpponent() {
-	for (int i = 0; i < GameManager::Players->size(); i++)
-	{
-		if (this->getPlayerNumber() != GameManager::Players->at(i)->getPlayerNumber()) {
-			return GameManager::Players->at(i);
-		}
-	}
-	return nullptr;
-}
-int AlphaBetaAI::getOrder(Player* p) {
-	for (int i = 0; i < GameManager::Players->size(); i++)
-	{
-		if (p->getPlayerNumber() == GameManager::Players->at(i)->getPlayerNumber()) {
-			return i;
-		}
-	}
-	return -1;
-}
 
-Move* AlphaBetaAI::makeMove(Board * b, int timeLimit)
+Move* AlphaBetaAI::makeMove(Board * b, int timeLimit, const Player* otherPlayer)
 {
 	startTime = Clock::now();
-	std::cout << *b;
 	Moves* moves = GameManager::getValidMoves(b, this);
 	Move* move = moves->at(0);
 	int score = 0;
 	for (int i = 0; i < moves->size(); i++)
 	{
 		Board* newBoard = GameManager::simulateMove(b, moves->at(i), this);
-		int result = minScore(newBoard, 0, 100);
+		int result = minScore(newBoard, 0, 100, otherPlayer);
 		if (result == 100) {
 			return moves->at(i);
 		}

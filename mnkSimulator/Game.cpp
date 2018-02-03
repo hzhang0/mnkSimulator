@@ -65,7 +65,7 @@ void Game::startGame()
 		std::atomic<bool> running{ true };
 		auto future = std::async(std::launch::async, timer, timeLimit, &running);
 		std::this_thread::sleep_for(std::chrono::milliseconds(10)); //avoids conflict between outputs
-		auto future2 = std::async(std::launch::async, &(Player::makeMove), curPlayer, &Board(*board), timeLimit);
+		auto future2 = std::async(std::launch::async, &(Player::makeMove), curPlayer, new Board(*board), timeLimit, otherPlayer);
 		while (future2.wait_for(std::chrono::milliseconds(100)) == std::future_status::timeout) { //if comp finishes before timer, stop
 			if (future.wait_for(std::chrono::milliseconds(100)) != std::future_status::timeout) { //if timer is up, break
 				break;
