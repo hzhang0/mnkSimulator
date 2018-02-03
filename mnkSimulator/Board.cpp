@@ -32,21 +32,21 @@ BoardSpace Board::getGrid (int x, int y) const
 	return board->at(y)->at(x);
 }
 
-bool Board::isWithinBounds(int x, int y) {
+bool Board::isWithinBounds(int x, int y) const {
 	return (y >= 0 && y < board->size() && x >= 0 && x < board->at(0)->size());
 }
 
-void Board::setGrid(Move* move) //assumes that move will be valid at this point
+void Board::setGrid(const Move* move) //assumes that move will be valid at this point
 {
-		board->at(move->getY())->at(move->getX()) = (move->playerNumToType)[move->getPlayer()];	
+		board->at(move->getY())->at(move->getX()) = (move->playerNumToType).at(move->getPlayer());	
 }
 
 int Board::getNumRows() const{
-	return board->size();
+	return static_cast<int>(board->size());
 }
 
 int Board::getNumCols() const{
-	return board->at(0)->size();
+	return static_cast<int>(board->at(0)->size());
 }
 
 int Board::getK() const
@@ -56,7 +56,7 @@ int Board::getK() const
 
 Board::~Board()
 {
-	//board should manage its own memory since it's a vector
+	delete board;
 }
 
 void fillSpace(std::ostream& out, int i) {

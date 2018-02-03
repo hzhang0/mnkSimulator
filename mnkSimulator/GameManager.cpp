@@ -4,7 +4,7 @@
 
 std::vector<Player*>* GameManager::Players = new std::vector<Player*>();
 
-EndState GameManager::isTerminal(Board* b)
+EndState GameManager::isTerminal(const Board* b)
 {
 	std::vector<std::vector<int>*> * p1 = new std::vector<std::vector<int>*>();
 	std::vector<std::vector<int>*> * p2 = new std::vector<std::vector<int>*>();
@@ -59,7 +59,7 @@ EndState GameManager::isTerminal(Board* b)
 	return EndState::NOT_TERMINAL; // Not yet terminal
 }
 
-EndState GameManager::isTerminal(Board* b, Move* lastMove) //faster method if last move is provided
+EndState GameManager::isTerminal(const Board* b, Move* lastMove) //faster method if last move is provided
 {
 	std::vector<ConnectionDirection> dir = {
 		ConnectionDirection::LEFTDIAG,
@@ -107,7 +107,7 @@ EndState GameManager::isTerminal(Board* b, Move* lastMove) //faster method if la
 
 	return EndState::NOT_TERMINAL;
 }
-int GameManager::isTerminalRecursive(Board* b, BoardSpace s, int x, int y, int dx, int dy) {
+int GameManager::isTerminalRecursive(const Board* b, BoardSpace s, int x, int y, int dx, int dy) {
 	if (b->isWithinBounds(x, y) && b->getGrid(x, y) == s) {
 		return 1 + isTerminalRecursive(b, s, x + dx, y + dy, dx, dy);
 	}
@@ -118,8 +118,8 @@ int GameManager::isTerminalRecursive(Board* b, BoardSpace s, int x, int y, int d
 }
 
 int GameManager::addConnectionToBoard(std::vector<std::vector<int>*> * b, int x, int y, ConnectionDirection c){
-	int h = b->size();
-	int w = b->at(0)->size();
+	int h = static_cast<int>(b->size());
+	int w = static_cast<int>(b->at(0)->size());
 	switch(c){
 		case ConnectionDirection::LEFTDIAG:
 			if(x > 0 && y > 0){ b->at(y)->at(x) = b->at(y-1)->at(x-1) + 1; }
@@ -141,7 +141,7 @@ int GameManager::addConnectionToBoard(std::vector<std::vector<int>*> * b, int x,
 	return b->at(y)->at(x);
 }
 
-Board* GameManager::simulateMove(Board* b, Move* m, Player* p)
+Board* GameManager::simulateMove(const Board* b, const Move* m, const Player* p)
 {
 	//check for terminality first. If b is a terminal state, raise an error.
 	//Also raise error if not valid move.
@@ -152,12 +152,13 @@ Board* GameManager::simulateMove(Board* b, Move* m, Player* p)
 		return nullptr;
 	}
 
-	b->setGrid(m);
+	Board* bnew = new Board(*b);
+	bnew->setGrid(m);
 
-	return new Board(*b);
+	return bnew;
 }
 
-Moves* GameManager::getValidMoves(Board* b, Player* p)
+Moves* GameManager::getValidMoves(const Board* b, const Player* p)
 {
 	//check for terminality first. If terminal, return empty list.
 	Moves * m = new Moves();
@@ -178,7 +179,7 @@ Moves* GameManager::getValidMoves(Board* b, Player* p)
 	return m;
 }
 
-bool GameManager::isValidMove(Board * b, Move * m, Player * p)
+bool GameManager::isValidMove(const Board * b, const Move * m, const Player * p)
 {
 	//No need to check for terminality here. Will be done inside game loop.
 	//check m->isWithinBounds() first
@@ -195,7 +196,7 @@ bool GameManager::isValidMove(Board * b, Move * m, Player * p)
 	return false;
 }
 
-int GameManager::getScore(Board* b, Player* p) {
+int GameManager::getScore(const Board* b, const Player* p) {
 	EndState gamestate = isTerminal(b);
 	if (gamestate == EndState::PLAYER1_WINS && p->getPlayerNumber() == 1 ||
 		gamestate == EndState::PLAYER2_WINS && p->getPlayerNumber() == 2) { return 100; }

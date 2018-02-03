@@ -19,6 +19,6 @@ public:
 	virtual Move* makeMove(Board* b, int timeLimit) = 0;
 	virtual const char* getName() = 0;
 	PlayerType getPlayerType();
-	int getPlayerNumber();	
+	int getPlayerNumber() const;
 	virtual ~Player();
 };

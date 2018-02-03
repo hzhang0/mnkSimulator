@@ -13,21 +13,21 @@ Move::Move(int x, int y, Player* p) :
 }
 
 
-int Move::getX()
+int Move::getX() const
 {
 	return x;
 }
 
-int Move::getY()
+int Move::getY() const
 {
 	return y;
 }
 
-bool Move::isWithinBounds(int m, int n)
+bool Move::isWithinBounds(int m, int n) const
 {
 	return (y<m && y>=0 && x<n && x>=0);
 }
 
-int Move::getPlayer() {
+int Move::getPlayer() const {
 	return fromPlayer;
 }

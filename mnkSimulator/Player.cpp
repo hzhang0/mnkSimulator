@@ -12,7 +12,7 @@ PlayerType Player::getPlayerType()
 	return PlayerType();
 }
 
-int Player::getPlayerNumber()
+int Player::getPlayerNumber() const
 {
 	return playerNumber;
 }

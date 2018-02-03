@@ -15,7 +15,7 @@ public:
 	virtual const char* getName() override;
 
 	int maxScore(Board* b, int alpha, int beta);
-	int minScore(Move* m, Board* b, int alpha, int beta);
+	int minScore(Board* b, int alpha, int beta);
 	Player* getOpponent();
 	int getOrder(Player* p);
 };
