@@ -2,6 +2,8 @@
 #include "Player.h"
 #include "Move.h"
 
+Move::Move() {}
+
 Move::Move(int x, int y, int playerNumber):
 	x(x), y(y), fromPlayer(playerNumber)
 {	

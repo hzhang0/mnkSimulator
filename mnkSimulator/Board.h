@@ -16,7 +16,7 @@ public:
 	Board(int m, int n, int k);
 	Board(const Board& board);
 	BoardSpace getGrid(int x, int y) const;
-	void setGrid(const Move* move);
+	void setGrid(const Move& move);
 	bool isWithinBounds(int x, int y)const;
 	int getNumRows() const;
 	int getNumCols() const;

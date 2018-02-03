@@ -36,9 +36,9 @@ bool Board::isWithinBounds(int x, int y) const {
 	return (y >= 0 && y < board.size() && x >= 0 && x < board.at(0).size());
 }
 
-void Board::setGrid(const Move* move) //assumes that move will be valid at this point
+void Board::setGrid(const Move& move) //assumes that move will be valid at this point
 {
-		board.at(move->getY()).at(move->getX()) = (move->playerNumToType).at(move->getPlayer());	
+		board.at(move.getY()).at(move.getX()) = (move.playerNumToType).at(move.getPlayer());	
 }
 
 int Board::getNumRows() const{

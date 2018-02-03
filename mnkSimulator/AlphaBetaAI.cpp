@@ -8,14 +8,14 @@ AlphaBetaAI::AlphaBetaAI(int m, int n, int k, int timeLimit, int playerNumber) :
 
 }
 
-int AlphaBetaAI::minScore(Board b, int alpha, int beta, const Player* otherPlayer) {
+int AlphaBetaAI::minScore(const Board& b, int alpha, int beta, const Player* otherPlayer) {
 	if (GameManager::isTerminal(b) != EndState::NOT_TERMINAL) {
 		return GameManager::getScore(b, this);		
 	}
-	Moves* moves = GameManager::getValidMoves(b, otherPlayer);
-	for (int i = 0; i < moves->size(); i++)
+	Moves moves{ GameManager::getValidMoves(b, otherPlayer) };
+	for (int i = 0; i < moves.size(); i++)
 	{
-		Move* move = moves->at(i);
+		Move move = moves.at(i);
 		Board newBoard = GameManager::simulateMove(b, move, otherPlayer);
 		beta = maxScore(newBoard, alpha, beta, otherPlayer);
 		if (beta <= alpha) {
@@ -24,14 +24,14 @@ int AlphaBetaAI::minScore(Board b, int alpha, int beta, const Player* otherPlaye
 	}
 	return beta;
 }
-int AlphaBetaAI::maxScore(Board b, int alpha, int beta, const Player* otherPlayer) {
+int AlphaBetaAI::maxScore(const Board& b, int alpha, int beta, const Player* otherPlayer) {
 	if (GameManager::isTerminal(b) != EndState::NOT_TERMINAL) {
 		return GameManager::getScore(b, this);
 	}
-	Moves* moves = GameManager::getValidMoves(b, this);
-	for (int i = 0; i < moves->size(); i++)
+	Moves moves{ GameManager::getValidMoves(b, this) };
+	for (int i = 0; i < moves.size(); i++)
 	{
-		Move* move = moves->at(i);
+		Move move = moves.at(i);
 		Board newBoard = GameManager::simulateMove(b, move, this);
 		int minval = minScore(newBoard, alpha, beta, otherPlayer);
 		alpha = alpha > minval ? alpha : minval;
@@ -42,22 +42,22 @@ int AlphaBetaAI::maxScore(Board b, int alpha, int beta, const Player* otherPlaye
 	return alpha;
 }
 
-Move* AlphaBetaAI::makeMove(Board b, int timeLimit, const Player* otherPlayer)
+Move AlphaBetaAI::makeMove(Board b, int timeLimit, const Player* otherPlayer)
 {
 	startTime = Clock::now();
-	Moves* moves = GameManager::getValidMoves(b, this);
-	Move* move = moves->at(0);
+	Moves moves = GameManager::getValidMoves(b, this);
+	Move move{ moves.at(0) };
 	int score = 0;
-	for (int i = 0; i < moves->size(); i++)
+	for (int i = 0; i < moves.size(); i++)
 	{
-		Board newBoard = GameManager::simulateMove(b, moves->at(i), this);
+		Board newBoard = GameManager::simulateMove(b, moves.at(i), this);
 		int result = minScore(newBoard, 0, 100, otherPlayer);
 		if (result == 100) {
-			return moves->at(i);
+			return moves.at(i);
 		}
 		if (result > score) {
 			score = result;
-			move = moves->at(i);
+			move = moves.at(i);
 		}
 	}
 	return move;

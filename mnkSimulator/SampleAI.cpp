@@ -8,18 +8,18 @@ SampleAI::SampleAI(int m, int n, int k, int timeLimit, int playerNumber):
 
 }
 
-Move* SampleAI::firstLegalMove(Moves* moves) {
-	return moves->at(0);
+Move SampleAI::firstLegalMove(Moves& moves) {
+	return moves.at(0);
 }
 
-Move* SampleAI::randomMove(Moves* moves) {
-	return moves->at(std::rand() % moves->size());
+Move SampleAI::randomMove(Moves& moves) {
+	return moves.at(std::rand() % moves.size());
 }
 
-Move* SampleAI::makeMove(Board b, int timeLimit, const Player* otherPlayer)
+Move SampleAI::makeMove(Board b, int timeLimit, const Player* otherPlayer)
 {
 	startTime = Clock::now();
-	Moves* moves = GameManager::getValidMoves(b, this);
+	Moves moves{ GameManager::getValidMoves(b, this) };
 	return randomMove(moves);
 }
 

@@ -13,7 +13,7 @@ HumanPlayer::HumanPlayer(int m, int n, int k, int timeLimit, int playerNumber):
 }
 
 
-Move* HumanPlayer::makeMove(Board b, int timeLimit, const Player* otherPlayer){
+Move HumanPlayer::makeMove(Board b, int timeLimit, const Player* otherPlayer){
 	std::string input;
 	bool valid = false;
 	int m1, m2;
@@ -32,7 +32,7 @@ Move* HumanPlayer::makeMove(Board b, int timeLimit, const Player* otherPlayer){
 			valid = true;
 		}
 	}
-	return new Move(m2, m1, getPlayerNumber());
+	return Move(m2, m1, getPlayerNumber());
 }
 
 const char * HumanPlayer::getName()

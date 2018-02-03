@@ -17,7 +17,7 @@ protected:
 	Player(int playerNumber, int timeLimit);
 
 public:	
-	virtual Move* makeMove(Board b, int timeLimit, const Player* otherPlayer) = 0;
+	virtual Move makeMove(Board b, int timeLimit, const Player* otherPlayer) = 0;
 	virtual const char* getName() = 0;
 	PlayerType getPlayerType();
 	int getPlayerNumber() const;

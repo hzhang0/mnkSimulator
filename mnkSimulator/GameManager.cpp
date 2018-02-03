@@ -2,7 +2,7 @@
 #include "GameManager.h"
 #include "Player.h"
 
-EndState GameManager::isTerminal(const Board b)
+EndState GameManager::isTerminal(const Board& b)
 {
 	std::vector<std::vector<int>*> p1{};
 	std::vector<std::vector<int>*> p2{};
@@ -25,11 +25,11 @@ EndState GameManager::isTerminal(const Board b)
 		p2.clear();
 
 		for (int i = 0; i < height; i++) {
-			std::vector<int>* row = new std::vector<int>;
-			row->reserve(width);
-			for (int j = 0; j < width; j++) { row->push_back(0); }
-			p1.push_back(new std::vector<int>(*row));
-			p2.push_back(new std::vector<int>(*row));
+			std::vector<int> row{};
+			row.reserve(width);
+			for (int j = 0; j < width; j++) { row.push_back(0); }
+			p1.push_back(new std::vector<int>{ row });
+			p2.push_back(new std::vector<int>{ row });
 			for (int j = 0; j < width; j++) {
 				switch(b.getGrid(j,i)) {
 				    case BoardSpace::EMPTY:
@@ -53,11 +53,17 @@ EndState GameManager::isTerminal(const Board b)
 			}
 		}
 	}
+	for (int i = 0; i < p1.size(); i++) {
+		delete p1.at(i);
+	}
+	for (int i = 0; i < p2.size(); i++) { 
+		delete p2.at(i);
+	}
 	if (!hasEmpty) { return EndState::DRAW; } // If board is full (not empty) and nobody wins, draw.
 	return EndState::NOT_TERMINAL; // Not yet terminal
 }
 
-EndState GameManager::isTerminal(const Board b, Move* lastMove) //faster method if last move is provided
+EndState GameManager::isTerminal(const Board& b, Move lastMove) //faster method if last move is provided
 {
 	std::vector<ConnectionDirection> dir = {
 		ConnectionDirection::LEFTDIAG,
@@ -65,7 +71,7 @@ EndState GameManager::isTerminal(const Board b, Move* lastMove) //faster method 
 		ConnectionDirection::VERTICAL,
 		ConnectionDirection::HORIZONTAL
 	};
-	BoardSpace p = lastMove->getPlayer() == 1 ? BoardSpace::PLAYER1PIECE : BoardSpace::PLAYER2PIECE;
+	BoardSpace p = lastMove.getPlayer() == 1 ? BoardSpace::PLAYER1PIECE : BoardSpace::PLAYER2PIECE;
 	int connection = 0;
 
 	bool hasEmpty = false;
@@ -82,30 +88,30 @@ EndState GameManager::isTerminal(const Board b, Move* lastMove) //faster method 
 	for (int c = 0; c < dir.size(); c++) {
 		switch (dir.at(c)) {
 			case ConnectionDirection::LEFTDIAG:
-				connection = isTerminalRecursive(b, p, lastMove->getX(), lastMove->getY(), -1, -1);
-				connection += isTerminalRecursive(b, p, lastMove->getX() + 1, lastMove->getY() + 1, 1, 1);
+				connection = isTerminalRecursive(b, p, lastMove.getX(), lastMove.getY(), -1, -1);
+				connection += isTerminalRecursive(b, p, lastMove.getX() + 1, lastMove.getY() + 1, 1, 1);
 				break;
 			case ConnectionDirection::RIGHTDIAG:
-				connection = isTerminalRecursive(b, p, lastMove->getX(), lastMove->getY(), -1, 1);
-				connection += isTerminalRecursive(b, p, lastMove->getX() + 1, lastMove->getY() - 1, 1, -1);
+				connection = isTerminalRecursive(b, p, lastMove.getX(), lastMove.getY(), -1, 1);
+				connection += isTerminalRecursive(b, p, lastMove.getX() + 1, lastMove.getY() - 1, 1, -1);
 				break;
 			case ConnectionDirection::VERTICAL:
-				connection = isTerminalRecursive(b, p, lastMove->getX(), lastMove->getY(), 0, -1);
-				connection += isTerminalRecursive(b, p, lastMove->getX(), lastMove->getY() + 1, 0, 1);
+				connection = isTerminalRecursive(b, p, lastMove.getX(), lastMove.getY(), 0, -1);
+				connection += isTerminalRecursive(b, p, lastMove.getX(), lastMove.getY() + 1, 0, 1);
 				break;
 			case ConnectionDirection::HORIZONTAL:
-				connection = isTerminalRecursive(b, p, lastMove->getX(), lastMove->getY(), -1, 0);
-				connection += isTerminalRecursive(b, p, lastMove->getX() + 1, lastMove->getY(), 1, 0);
+				connection = isTerminalRecursive(b, p, lastMove.getX(), lastMove.getY(), -1, 0);
+				connection += isTerminalRecursive(b, p, lastMove.getX() + 1, lastMove.getY(), 1, 0);
 				break;
 		}
 		if (connection >= b.getK()) {
-			return lastMove->getPlayer() == 1 ? EndState::PLAYER1_WINS : EndState::PLAYER2_WINS;
+			return lastMove.getPlayer() == 1 ? EndState::PLAYER1_WINS : EndState::PLAYER2_WINS;
 		}
 	}
 
 	return EndState::NOT_TERMINAL;
 }
-int GameManager::isTerminalRecursive(const Board b, BoardSpace s, int x, int y, int dx, int dy) {
+int GameManager::isTerminalRecursive(const Board& b, BoardSpace s, int x, int y, int dx, int dy) {
 	if (b.isWithinBounds(x, y) && b.getGrid(x, y) == s) {
 		return 1 + isTerminalRecursive(b, s, x + dx, y + dy, dx, dy);
 	}
@@ -139,7 +145,7 @@ int GameManager::addConnectionToBoard(std::vector<std::vector<int>*> b, int x, i
 	return b.at(y)->at(x);
 }
 
-Board GameManager::simulateMove(const Board b, const Move* m, const Player* p)
+Board GameManager::simulateMove(const Board& b, const Move& m, const Player* p)
 {
 	//check for terminality first. If b is a terminal state, raise an error.
 	//Also raise error if not valid move.
@@ -156,10 +162,10 @@ Board GameManager::simulateMove(const Board b, const Move* m, const Player* p)
 	return bnew;
 }
 
-Moves* GameManager::getValidMoves(const Board b, const Player* p)
+Moves GameManager::getValidMoves(const Board& b, const Player* p)
 {
 	//check for terminality first. If terminal, return empty list.
-	Moves * m = new Moves();
+	Moves m{};
 
 	if (isTerminal(b) != EndState::NOT_TERMINAL) {
 		return m;
@@ -170,31 +176,31 @@ Moves* GameManager::getValidMoves(const Board b, const Player* p)
 		for (int j = 0; j < b.getNumCols(); j++)
 		{
 			if (b.getGrid(j, i) == BoardSpace::EMPTY) {
-				m->push_back(new Move(j, i, p->getPlayerNumber()));
+				m.push_back(Move(j, i, p->getPlayerNumber()));
 			}
 		}
 	}
 	return m;
 }
 
-bool GameManager::isValidMove(const Board b, const Move * m, const Player * p)
+bool GameManager::isValidMove(const Board& b, const Move& m, const Player * p)
 {
 	//No need to check for terminality here. Will be done inside game loop.
 	//check m->isWithinBounds() first
 	//also check if m->getPlayer() == p->getPlayerNumber()
 
-	if (!m->isWithinBounds(b.getNumCols(), b.getNumRows())) return false;
+	if (!m.isWithinBounds(b.getNumCols(), b.getNumRows())) return false;
 
-	if (m->getPlayer() != p->getPlayerNumber()) return false;
+	if (m.getPlayer() != p->getPlayerNumber()) return false;
 
-	if (b.getGrid(m->getX(), m->getY()) == BoardSpace::EMPTY) {
+	if (b.getGrid(m.getX(), m.getY()) == BoardSpace::EMPTY) {
 		return true;
 	}
 
 	return false;
 }
 
-int GameManager::getScore(const Board b, const Player* p) {
+int GameManager::getScore(const Board& b, const Player* p) {
 	EndState gamestate = isTerminal(b);
 	if (gamestate == EndState::PLAYER1_WINS && p->getPlayerNumber() == 1 ||
 		gamestate == EndState::PLAYER2_WINS && p->getPlayerNumber() == 2) { return 100; }

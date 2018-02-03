@@ -11,6 +11,7 @@ private:
 
 public:
 	std::map<int, BoardSpace> playerNumToType = { {1, BoardSpace::PLAYER1PIECE},{2, BoardSpace::PLAYER2PIECE} };
+	Move();
 	Move(int x, int y, int playerNumber);
 	Move(int x, int y, Player* p); // col, row
 	int getX() const;
