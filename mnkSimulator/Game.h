@@ -6,7 +6,7 @@ class Game {
 private:
 	Player * player1;
 	Player * player2;
-	Board* board;
+	Board board;
 	int m;
 	int n;
 	int k;

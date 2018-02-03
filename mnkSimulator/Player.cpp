@@ -23,5 +23,5 @@ Player::~Player()
 
 int Player::getTimeLeft()
 {
-	return timeLimit - std::chrono::duration_cast<std::chrono::milliseconds>(Clock::now() - startTime).count();
+	return static_cast<int>(timeLimit - std::chrono::duration_cast<std::chrono::milliseconds>(Clock::now() - startTime).count());
 }

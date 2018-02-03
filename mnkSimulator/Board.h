@@ -6,11 +6,11 @@
 #include "Common.h"
 
 typedef std::vector<BoardSpace> row;
-typedef std::vector<row*> boardData;
+typedef std::vector<row> boardData;
 
 class Board {
 private:
-	boardData * board;
+	boardData board;
 	int k;
 public:	
 	Board(int m, int n, int k);

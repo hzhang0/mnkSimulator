@@ -16,12 +16,12 @@ enum class ConnectionDirection{
 };
 
 namespace GameManager {
-	EndState isTerminal(const Board* b);
-	EndState isTerminal(const Board* b, Move* lastMove);
-	int isTerminalRecursive(const Board* b, BoardSpace s, int x, int y, int dx, int dy);
-	int addConnectionToBoard(std::vector<std::vector<int>*> * b, int x, int y, ConnectionDirection c);
-	Board* simulateMove(const Board* b, const Move* m, const Player* p);
-	Moves* getValidMoves(const Board* b, const Player* p);
-	int getScore(const Board* b, const Player* p);
-	bool isValidMove(const Board* b, const Move* m, const Player* p);
+	EndState isTerminal(const Board b);
+	EndState isTerminal(const Board b, Move* lastMove);
+	int isTerminalRecursive(const Board b, BoardSpace s, int x, int y, int dx, int dy);
+	int addConnectionToBoard(std::vector<std::vector<int>*> b, int x, int y, ConnectionDirection c);
+	Board simulateMove(const Board b, const Move* m, const Player* p);
+	Moves* getValidMoves(const Board b, const Player* p);
+	int getScore(const Board b, const Player* p);
+	bool isValidMove(const Board b, const Move* m, const Player* p);
 };

@@ -6,47 +6,47 @@ Board::Board(int m, int n, int k):
 	k(k)
 {
 	//initialize board
-	board = new boardData();
 	for (int i = 0; i < m; i++) {
-		row* r = new row();
+		row r{};
 		for (int j = 0; j < n; j++) {
-			r->push_back(BoardSpace::EMPTY);
+			r.push_back(BoardSpace::EMPTY);
 		}
-		board->push_back(r);
+		board.push_back(r);
 	}
 }
 
-Board::Board(const Board & b) //copy constructor
-	:Board(b.getNumRows(), b.getNumCols(), b.getK())
+Board::Board(const Board & b): k(b.getK()) //copy constructor
 {
 	//deep copy
-	for (int i = 0; i < getNumRows(); i++) {
-		for (int j = 0; j < getNumCols(); j++) {
-			board->at(i)->at(j) = b.getGrid(j, i);
+	for (int i = 0; i < b.getNumRows(); i++) {
+		row r{};
+		for (int j = 0; j < b.getNumCols(); j++) {
+			r.push_back(b.getGrid(j, i));
 		}
+		board.push_back(r);
 	}
 }
 
 BoardSpace Board::getGrid (int x, int y) const
 {
-	return board->at(y)->at(x);
+	return board.at(y).at(x);
 }
 
 bool Board::isWithinBounds(int x, int y) const {
-	return (y >= 0 && y < board->size() && x >= 0 && x < board->at(0)->size());
+	return (y >= 0 && y < board.size() && x >= 0 && x < board.at(0).size());
 }
 
 void Board::setGrid(const Move* move) //assumes that move will be valid at this point
 {
-		board->at(move->getY())->at(move->getX()) = (move->playerNumToType).at(move->getPlayer());	
+		board.at(move->getY()).at(move->getX()) = (move->playerNumToType).at(move->getPlayer());	
 }
 
 int Board::getNumRows() const{
-	return static_cast<int>(board->size());
+	return static_cast<int>(board.size());
 }
 
 int Board::getNumCols() const{
-	return static_cast<int>(board->at(0)->size());
+	return static_cast<int>(board.at(0).size());
 }
 
 int Board::getK() const
@@ -56,7 +56,6 @@ int Board::getK() const
 
 Board::~Board()
 {
-	delete board;
 }
 
 void fillSpace(std::ostream& out, int i) {

@@ -8,15 +8,15 @@
 #include <future>
 #include <algorithm>
 
-Game::Game(int m, int n, int k, int timeLimit, Player * p1, Player * p2)
+Game::Game(int m, int n, int k, int timeLimit, Player * p1, Player * p2):
+	board(m, n, k)
 {
 	this->m = m;
 	this->n = n;
 	this->k = k;
 	this->timeLimit = timeLimit;
 	this->player1 = p1;
-	this->player2 = p2;
-	this->board = new Board(m, n, k);
+	this->player2 = p2;	
 }
 
 void clearScreen() {
@@ -60,12 +60,12 @@ void Game::startGame()
 		std::cout << "Time:         " << std::endl;
 		std::cout << "Move " << move << std::endl;
 		std::cout << "Player " << curPlayer->getPlayerNumber() << ", " << curPlayer->getName() << ", to move." << std::endl << std::endl;
-		std::cout << *board;
+		std::cout << board;
 
 		std::atomic<bool> running{ true };
 		auto future = std::async(std::launch::async, timer, timeLimit, &running);
 		std::this_thread::sleep_for(std::chrono::milliseconds(10)); //avoids conflict between outputs
-		auto future2 = std::async(std::launch::async, &(Player::makeMove), curPlayer, new Board(*board), timeLimit, otherPlayer);
+		auto future2 = std::async(std::launch::async, &(Player::makeMove), curPlayer, board, timeLimit, otherPlayer);
 		while (future2.wait_for(std::chrono::milliseconds(100)) == std::future_status::timeout) { //if comp finishes before timer, stop
 			if (future.wait_for(std::chrono::milliseconds(100)) != std::future_status::timeout) { //if timer is up, break
 				break;
@@ -115,12 +115,11 @@ void Game::startGame()
 			std::cout << "Player 2" << ", " << player2->getName() << ", wins." << std::endl;
 			break;
 	}
-	std::cout << *board;
+	std::cout << board;
 }
 
 Game::~Game()
 {
 	delete player1;
 	delete player2;
-	delete board;
 }
