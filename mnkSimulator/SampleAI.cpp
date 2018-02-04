@@ -16,7 +16,7 @@ Move SampleAI::randomMove(Moves& moves) {
 	return moves.at(std::rand() % moves.size());
 }
 
-Move SampleAI::makeMove(Board b, int timeLimit, const Player* otherPlayer)
+Move SampleAI::makeMove(Board b, int timeLimit, const Player* otherPlayer, std::atomic<bool>* timesUp)
 {
 	startTime = Clock::now();
 	Moves moves{ GameManager::getValidMoves(b, this) };

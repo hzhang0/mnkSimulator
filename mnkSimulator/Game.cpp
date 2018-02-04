@@ -63,17 +63,19 @@ void Game::startGame()
 		std::cout << board;
 
 		std::atomic<bool> running{ true };
+		std::atomic<bool> timesUp{ false };
 		auto future = std::async(std::launch::async, timer, timeLimit, &running);
 		std::this_thread::sleep_for(std::chrono::milliseconds(10)); //avoids conflict between outputs
-		auto future2 = std::async(std::launch::async, &(Player::makeMove), curPlayer, board, timeLimit, otherPlayer);
+		auto future2 = std::async(std::launch::async, &(Player::makeMove), curPlayer, board, timeLimit, otherPlayer, &timesUp);
 		while (future2.wait_for(std::chrono::milliseconds(100)) == std::future_status::timeout) { //if comp finishes before timer, stop
-			if (future.wait_for(std::chrono::milliseconds(100)) != std::future_status::timeout) { //if timer is up, break
+			if (future.wait_for(std::chrono::milliseconds(100)) != std::future_status::timeout && curPlayer->getPlayerType() != PlayerType::HUMAN) { //if timer is up, break, unless human
+				timesUp = true; //Give bots 200 miliseconds before assigning random move
 				break;
 			}
 		}		
 		running = false;
 		Move m{};
-		if (future2.wait_for(std::chrono::milliseconds(100)) == std::future_status::timeout) { //if computation is still not done
+		if (future2.wait_for(std::chrono::milliseconds(200)) == std::future_status::timeout) { //if computation is still not done, give 200ms grace period
 			std::cout << "Time's up!" << std::endl;
 			m = GameManager::getValidMoves(board, curPlayer).at(0);
 			std::cout << "Assigned random move (" << m.getY() << ", " << m.getX() << ")." << std::endl;
@@ -95,7 +97,7 @@ void Game::startGame()
 		if (es == EndState::NOT_TERMINAL) {
 			swap(curPlayer, otherPlayer);
 			move++;
-		}
+		} //futures are destroyed here. Will hang here until bots voluntarily exit
 	}
 
 	switch (es) {

@@ -23,13 +23,12 @@ EndState GameManager::isTerminal(const Board& b)
 	for (int c = 0; c < dir.size(); c++){ // Loop through all directions of connections
 		p1.clear();
 		p2.clear();
-
 		for (int i = 0; i < height; i++) {
-			std::vector<int> row{};
-			row.reserve(width);
-			for (int j = 0; j < width; j++) { row.push_back(0); }
-			p1.push_back(new std::vector<int>{ row });
-			p2.push_back(new std::vector<int>{ row });
+			std::vector<int>* row = new std::vector<int>();
+			row->reserve(width);
+			for (int j = 0; j < width; j++) { row->push_back(0); }
+			p1.push_back(row);
+			p2.push_back(new std::vector<int>{ *row });
 			for (int j = 0; j < width; j++) {
 				switch(b.getGrid(j,i)) {
 				    case BoardSpace::EMPTY:

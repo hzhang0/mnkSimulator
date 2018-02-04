@@ -42,7 +42,7 @@ int AlphaBetaAI::maxScore(const Board& b, int alpha, int beta, const Player* oth
 	return alpha;
 }
 
-Move AlphaBetaAI::makeMove(Board b, int timeLimit, const Player* otherPlayer)
+Move AlphaBetaAI::makeMove(Board b, int timeLimit, const Player* otherPlayer, std::atomic<bool>* timesUp)
 {
 	startTime = Clock::now();
 	Moves moves = GameManager::getValidMoves(b, this);
@@ -58,6 +58,10 @@ Move AlphaBetaAI::makeMove(Board b, int timeLimit, const Player* otherPlayer)
 		if (result > score) {
 			score = result;
 			move = moves.at(i);
+		}
+		if (*timesUp) {
+			//std::cout << "Timed out!" << std::endl;
+			return move;
 		}
 	}
 	return move;
