@@ -188,7 +188,7 @@ bool GameManager::isValidMove(const Board& b, const Move& m, const Player * p)
 	//check m->isWithinBounds() first
 	//also check if m->getPlayer() == p->getPlayerNumber()
 
-	if (!m.isWithinBounds(b.getNumCols(), b.getNumRows())) return false;
+	if (!m.isWithinBounds(b.getNumRows(), b.getNumCols())) return false;
 
 	if (m.getPlayer() != p->getPlayerNumber()) return false;
 
